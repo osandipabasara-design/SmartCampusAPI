@@ -1,7 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus.resource;
 
 import com.smartcampus.exception.SensorUnavailableException;
@@ -25,10 +25,10 @@ public class SensorReadingResource {
         this.sensorId = sensorId;
     }
 
-    // GET /api/v1/sensors/{sensorId}/readings
+    // Get all the readings recorded for this sensor
     @GET
     public Response getAllReadings() {
-        // Make sure the sensor exists
+        // If the sensor doesn't exist, return an error
         if (!store.getSensors().containsKey(sensorId)) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(java.util.Map.of("error", "Sensor not found: " + sensorId))
@@ -39,7 +39,7 @@ public class SensorReadingResource {
         return Response.ok(list).build();
     }
 
-    // POST /api/v1/sensors/{sensorId}/readings
+    // Add a new measurement reading for this sensor
     @POST
     public Response addReading(SensorReading reading) {
         Sensor sensor = store.getSensors().get(sensorId);
@@ -50,18 +50,18 @@ public class SensorReadingResource {
                     .build();
         }
 
-        // Part 5.3: block readings if sensor is under MAINTENANCE
+        // Don't allow readings if the sensor is being fixed
         if ("MAINTENANCE".equals(sensor.getStatus())) {
             throw new SensorUnavailableException(sensorId);
         }
 
-        // Create and save the reading
+        // Create the reading and add it to our list
         SensorReading newReading = new SensorReading(reading.getValue());
         store.getReadings()
              .computeIfAbsent(sensorId, k -> new ArrayList<>())
              .add(newReading);
 
-        // Part 4.2: update the parent sensor's currentValue
+        // Update the sensor's current value too
         sensor.setCurrentValue(reading.getValue());
 
         return Response.status(Response.Status.CREATED).entity(newReading).build();
