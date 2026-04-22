@@ -19,7 +19,7 @@ I used Java with Jersey and Grizzly to build this. All the data is stored in mem
 ### How to do it
 
 1. **Clone the code**
-   `git clone https://github.com/YourUsername/SmartCampusAPI.git`
+   `git clone https://github.com/osandipabasara-design/SmartCampusAPI.git`
 
 2. **Open it in NetBeans**
    Just open the folder as a project in NetBeans.
