@@ -1,7 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus.resource;
 
 import jakarta.ws.rs.GET;
@@ -15,6 +15,7 @@ import java.util.Map;
 @Path("/")
 public class DiscoveryResource {
 
+    // This shows all the available links in our API
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response discover() {

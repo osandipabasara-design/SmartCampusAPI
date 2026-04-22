@@ -1,7 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus.resource;
 
 import com.smartcampus.exception.LinkedResourceNotFoundException;
@@ -22,7 +22,7 @@ public class SensorResource {
 
     private final DataStore store = DataStore.getInstance();
 
-    // GET /api/v1/sensors  (optionally ?type=CO2)
+    // Get all sensors, can filter by type too
     @GET
     public Response getAllSensors(@QueryParam("type") String type) {
         List<Sensor> result = store.getSensors().values().stream()
@@ -31,21 +31,21 @@ public class SensorResource {
         return Response.ok(result).build();
     }
 
-    // POST /api/v1/sensors
+    // Add a new sensor to the system
     @POST
     public Response createSensor(Sensor sensor) {
-        // Part 3.1: validate that the roomId exists
+        // Check if the room exists first
         if (sensor.getRoomId() == null || !store.getRooms().containsKey(sensor.getRoomId())) {
             throw new LinkedResourceNotFoundException(
                 "Room with ID '" + sensor.getRoomId() + "' does not exist. Cannot register sensor.");
         }
 
-        // Auto-generate an ID if not provided
+        // Give it an ID if it doesn't have one
         if (sensor.getId() == null || sensor.getId().isBlank()) {
             sensor.setId("SENSOR-" + System.currentTimeMillis());
         }
 
-        // Check for duplicate
+        // Make sure the ID isn't already used
         if (store.getSensors().containsKey(sensor.getId())) {
             return Response.status(Response.Status.CONFLICT)
                     .entity(Map.of("error", "Sensor ID already exists: " + sensor.getId()))
@@ -54,7 +54,7 @@ public class SensorResource {
 
         store.getSensors().put(sensor.getId(), sensor);
 
-        // Link sensor to room
+        // Link the sensor to the room it belongs to
         Room room = store.getRooms().get(sensor.getRoomId());
         if (!room.getSensorIds().contains(sensor.getId())) {
             room.getSensorIds().add(sensor.getId());
@@ -63,7 +63,7 @@ public class SensorResource {
         return Response.status(Response.Status.CREATED).entity(sensor).build();
     }
 
-    // GET /api/v1/sensors/{sensorId}
+    // Get details of one specific sensor
     @GET
     @Path("/{sensorId}")
     public Response getSensor(@PathParam("sensorId") String sensorId) {
@@ -76,7 +76,7 @@ public class SensorResource {
         return Response.ok(sensor).build();
     }
 
-    // Part 4.1: Sub-resource locator for readings
+    // Path for sensor readings
     @Path("/{sensorId}/readings")
     public SensorReadingResource getReadingResource(@PathParam("sensorId") String sensorId) {
         return new SensorReadingResource(sensorId);

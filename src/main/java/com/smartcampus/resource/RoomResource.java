@@ -1,7 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus.resource;
 
 import com.smartcampus.exception.RoomNotEmptyException;
@@ -21,7 +21,7 @@ public class RoomResource {
 
     private final DataStore store = DataStore.getInstance();
 
-    // GET /api/v1/rooms
+    // Get a list of all rooms
     @GET
     public Response getAllRooms() {
         List<Room> roomList = store.getRooms().values().stream()
@@ -29,7 +29,7 @@ public class RoomResource {
         return Response.ok(roomList).build();
     }
 
-    // POST /api/v1/rooms
+    // Create a new room
     @POST
     public Response createRoom(Room room) {
         if (room.getId() == null || room.getId().isBlank()) {
@@ -46,7 +46,7 @@ public class RoomResource {
         return Response.status(Response.Status.CREATED).entity(room).build();
     }
 
-    // GET /api/v1/rooms/{roomId}
+    // Get a single room by its ID
     @GET
     @Path("/{roomId}")
     public Response getRoomById(@PathParam("roomId") String roomId) {
@@ -59,25 +59,24 @@ public class RoomResource {
         return Response.ok(room).build();
     }
 
-    // DELETE /api/v1/rooms/{roomId}
+    // Delete a room if it is empty
     @DELETE
     @Path("/{roomId}")
     public Response deleteRoom(@PathParam("roomId") String roomId) {
         Room room = store.getRooms().get(roomId);
 
         if (room == null) {
-            // Idempotent: already gone, return 404
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(Map.of("error", "Room not found: " + roomId))
                     .build();
         }
 
-        // Part 2.2: Block if sensors are still assigned
+        // We can't delete a room if it still has sensors
         if (!room.getSensorIds().isEmpty()) {
             throw new RoomNotEmptyException(roomId);
         }
 
         store.getRooms().remove(roomId);
-        return Response.noContent().build(); // 204 No Content
+        return Response.noContent().build(); 
     }
 }
