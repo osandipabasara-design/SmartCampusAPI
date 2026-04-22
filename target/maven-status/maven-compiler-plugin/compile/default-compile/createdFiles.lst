@@ -6,7 +6,6 @@ com/smartcampus/smartcampusapi/resource/SensorReadingResource.class
 com/smartcampus/smartcampusapi/SmartCampusAPI.class
 com/smartcampus/smartcampusapi/exception/GlobalExceptionMapper.class
 com/smartcampus/smartcampusapi/exception/LoggingFilter.class
-com/smartcampus/smartcampusapi/SmartCampusApplication.class
 com/smartcampus/smartcampusapi/resource/DiscoveryResource.class
 com/smartcampus/smartcampusapi/exception/LinkedResourceNotFoundException.class
 com/smartcampus/smartcampusapi/exception/LinkedResourceNotFoundMapper.class

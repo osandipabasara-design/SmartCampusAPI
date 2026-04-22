@@ -7,6 +7,14 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <mainClass>${mainClass}</mainClass>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.5.1</version>
         <executions>
@@ -18,7 +26,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.smartcampus.Main</mainClass>
+                  <mainClass>${mainClass}</mainClass>
                 </transformer>
                 <transformer />
               </transformers>
@@ -31,6 +39,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>17</maven.compiler.target>
+    <mainClass>com.smartcampus.smartcampusapi.SmartCampusAPI</mainClass>
     <maven.compiler.source>17</maven.compiler.source>
   </properties>
 </project>
