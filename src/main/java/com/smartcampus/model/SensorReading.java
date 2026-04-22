@@ -1,11 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus.model;
 
 import java.util.UUID;
 
+// This class stores a single sensor measurement
 public class SensorReading {
     private String id;
     private long timestamp;
@@ -14,12 +15,13 @@ public class SensorReading {
     public SensorReading() {}
 
     public SensorReading(double value) {
+        // Create a unique ID and record the time
         this.id = UUID.randomUUID().toString();
         this.timestamp = System.currentTimeMillis();
         this.value = value;
     }
 
-    // Getters and Setters
+    // Standard getters and setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 

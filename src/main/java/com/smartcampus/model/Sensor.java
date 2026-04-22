@@ -1,13 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus.model;
 
+// This class represents a sensor on the campus
 public class Sensor {
     private String id;
     private String type;
-    private String status;   // "ACTIVE", "MAINTENANCE", or "OFFLINE"
+    // Status can be ACTIVE, MAINTENANCE, or OFFLINE
+    private String status;   
     private double currentValue;
     private String roomId;
 
@@ -21,7 +23,7 @@ public class Sensor {
         this.roomId = roomId;
     }
 
-    // Getters and Setters
+    // Basic getters and setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 

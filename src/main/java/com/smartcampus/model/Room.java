@@ -1,16 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
+// This class represents a Room on campus
 public class Room {
     private String id;
     private String name;
     private int capacity;
+    // List of sensors in this room
     private List<String> sensorIds = new ArrayList<>();
 
     public Room() {}
@@ -21,7 +23,7 @@ public class Room {
         this.capacity = capacity;
     }
 
-    // Getters and Setters
+    // These are the basic getters and setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
