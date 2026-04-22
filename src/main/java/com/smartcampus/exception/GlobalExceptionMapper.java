@@ -1,7 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus.exception;
 
 import jakarta.ws.rs.core.MediaType;
@@ -12,13 +12,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// This class catches any unexpected errors and sends a nice message to the user
 @Provider
 public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
     private static final Logger LOGGER = Logger.getLogger(GlobalExceptionMapper.class.getName());
 
     @Override
     public Response toResponse(Throwable e) {
-        // Log the full error on the server, but don't expose it to the client
+        // Log the error so we can fix it later
         LOGGER.log(Level.SEVERE, "Unhandled exception: ", e);
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(Map.of(
