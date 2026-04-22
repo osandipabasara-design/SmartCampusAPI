@@ -1,7 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Name: Osandi Randeniya
+// UOW ID: w2153603
+// IIT ID: 20242020
+
 package com.smartcampus;
 
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -13,19 +13,20 @@ import java.net.URI;
 
 public class Main {
 
+    // The base URL for our server
     public static final String BASE_URI = "http://localhost:8080/";
 
     public static void main(String[] args) throws Exception {
-        // Configure Jersey — tell it where to scan for resources
+        // Setting up Jersey and telling it where to find our code
         ResourceConfig config = new ResourceConfig()
                 .packages(
                     "com.smartcampus.resource",
                     "com.smartcampus.exception",
                     "com.smartcampus.filter"
                 )
-                .register(JacksonFeature.class); // enables JSON conversion
+                .register(JacksonFeature.class); // This helps with JSON
 
-        // Start the embedded Grizzly HTTP server
+        // Starting the Grizzly server
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
                 URI.create(BASE_URI + "api/v1"), config);
 
@@ -35,7 +36,8 @@ public class Main {
         System.out.println("Press ENTER to stop the server.");
         System.out.println("===================================================");
 
-        System.in.read(); // Keep running until you press Enter
+        // Keep the server running until Enter is pressed
+        System.in.read(); 
         server.shutdown();
     }
 }
