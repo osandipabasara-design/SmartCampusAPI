@@ -14,16 +14,15 @@ import java.net.URI;
 public class Main {
 
     // The base URL for our server
-    public static final String BASE_URI = "http://localhost:8080/";
+    public static final String BASE_URI = "http://localhost:8080/api/v1";
 
     public static void main(String[] args) throws Exception {
         // Setting up Jersey and telling it where to find our code
         ResourceConfig config = new ResourceConfig()
                 .packages(
-                    "com.smartcampus.resource",
-                    "com.smartcampus.exception",
-                    "com.smartcampus.filter"
-                )
+                        "com.smartcampus.resource",
+                        "com.smartcampus.exception",
+                        "com.smartcampus.filter")
                 .register(JacksonFeature.class); // This helps with JSON
 
         // Starting the Grizzly server
@@ -37,7 +36,7 @@ public class Main {
         System.out.println("===================================================");
 
         // Keep the server running until Enter is pressed
-        System.in.read(); 
+        System.in.read();
         server.shutdown();
     }
 }
