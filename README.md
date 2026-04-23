@@ -40,13 +40,31 @@ You can watch my project demo video here: [Watch on YouTube](https://youtu.be/Z0
 
 ---
 
-## Simple Examples (curl)
+## Sample curl Commands
 
-- **See the API links:** `curl http://localhost:8081/api/`
-- **Get all rooms:** `curl http://localhost:8081/api/rooms`
-- **Add a new room:** `curl -X POST http://localhost:8081/api/rooms -H "Content-Type: application/json" -d '{"id":"ROOM-101","name":"Classroom 101","capacity":40}'`
-- **Search for sensors:** `curl http://localhost:8081/api/sensors?type=Temperature`
-- **Add a sensor reading:** `curl -X POST http://localhost:8081/api/sensors/TEMP-001/readings -H "Content-Type: application/json" -d '{"value": 22.5}'`
+### 1. Discovery endpoint
+`curl http://localhost:8081/api/`
+
+### 2. Get all rooms
+`curl http://localhost:8081/api/rooms`
+
+### 3. Create a new room
+`curl -X POST http://localhost:8081/api/rooms -H "Content-Type: application/json" -d '{"id":"HALL-01","name":"Main Hall","capacity":200}'`
+
+### 4. Filter sensors by type
+`curl http://localhost:8081/api/sensors?type=CO2`
+
+### 5. Add a sensor reading
+`curl -X POST http://localhost:8081/api/sensors/TEMP-001/readings -H "Content-Type: application/json" -d '{"value": 23.7}'`
+
+### 6. Delete a room that has sensors (returns 409 Conflict)
+`curl -X DELETE http://localhost:8081/api/rooms/LIB-301`
+
+### 7. Create sensor with invalid roomId (returns 422 error)
+`curl -X POST http://localhost:8081/api/sensors -H "Content-Type: application/json" -d '{"id":"TEMP-999","type":"Temperature","status":"ACTIVE", "currentValue":0,"roomId":"FAKE-ROOM"}'`
+
+### 8. Post reading to maintenance sensor (returns 403 Forbidden)
+`curl -X POST http://localhost:8081/api/sensors/CO2-002/readings -H "Content-Type: application/json" -d '{"value": 450.0}'`
 
 ---
 
@@ -67,7 +85,7 @@ In Jersey, a new object is usually created for every single request. This means 
 I added a "Discovery" endpoint which is like a home page for the API. It contains links to other parts of the system, like rooms and sensors. This makes the API "self-documenting" because the user doesn't have to guess the URLs!
 
 **3. Room Management (Resource Design)**
-When you ask for a list of rooms, I chose to send back all the details (like name and capacity) instead of just the IDs. This is much better because it saves the user from having to make dozens of extra requests just to see the names of the rooms.
+When you ask for a list of rooms, I send back all the details (like name and capacity) instead of just the IDs. This is much better because it saves the user from having to make dozens of extra requests just to see the names of the rooms.
 
 **4. Deleting Rooms (Idempotency)**
 I made the DELETE operation "idempotent," which means deleting something once or twice has the same effect on the server. I also added a safety check: if a room still has sensors in it, the API will block the deletion and send an error message.
