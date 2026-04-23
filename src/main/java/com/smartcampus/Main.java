@@ -13,30 +13,24 @@ import java.net.URI;
 
 public class Main {
 
-    // The base URL for our server
-    public static final String BASE_URI = "http://localhost:8080/api/v1/";
+    // Using 0.0.0.0 to make sure it listens on all addresses
+    public static final String BASE_URI = "http://0.0.0.0:8081/api/";
 
     public static void main(String[] args) throws Exception {
-        // Setting up Jersey and telling it where to find our code
+        System.out.println("Starting server at: http://localhost:8081/api/");
+
+        // Manually registering classes just in case package scanning is failing
         ResourceConfig config = new ResourceConfig()
-                .packages(
-                    "com.smartcampus.resource",
-                    "com.smartcampus.exception",
-                    "com.smartcampus.filter"
-                )
-                .register(JacksonFeature.class); // This helps with JSON
+                .packages("com.smartcampus.resource", "com.smartcampus.exception", "com.smartcampus.filter")
+                .register(JacksonFeature.class);
 
-        // Starting the Grizzly server
-        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
-                URI.create(BASE_URI), config);
+        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
 
         System.out.println("===================================================");
-        System.out.println("Smart Campus API started!");
-        System.out.println("Discovery endpoint: " + BASE_URI);
-        System.out.println("Press ENTER to stop the server.");
+        System.out.println("SERVER IS READY!");
+        System.out.println("Try this in Postman: http://localhost:8081/api/rooms");
         System.out.println("===================================================");
 
-        // Keep the server running until Enter is pressed
         System.in.read(); 
         server.shutdown();
     }
