@@ -4,9 +4,14 @@
 
 ## Overview
 
-Hi! I am Osandi. This is my project for the Client-Server Architectures coursework. It is a simple API to manage rooms and sensors in a university campus.
+Hi! I am Osandi. This is my project for the Client-Server Architectures coursework. I built a simple API to help manage rooms and sensors in a university campus.
 
-I used Java with Jersey and Grizzly to build this. All the data is stored in memory, so it is very fast but it resets when you restart the server.
+I used Java with Jersey and Grizzly to make this. All the data is stored in memory, which makes it super fast!
+
+---
+
+## Project Demo Video
+You can watch my project demo video here: [Watch on YouTube](https://youtu.be/Z0F1JVWYKrQ?si=7xN_8QwawOTYYzzj)
 
 ---
 
@@ -25,23 +30,23 @@ I used Java with Jersey and Grizzly to build this. All the data is stored in mem
    Just open the folder as a project in NetBeans.
 
 3. **Build the project**
-   Right-click and choose "Clean and Build". Maven will handle everything.
+   Right-click and choose "Clean and Build". Maven will handle all the libraries for us.
 
 4. **Run the server**
-   Run the `Main.java` file. You will see a message saying the API started!
+   Run the `Main.java` file. You will see a message saying "SERVER IS READY!".
 
 5. **Test it**
-   Go to `http://localhost:8080/api/v1` in your browser.
+   Go to `http://localhost:8081/api/` in your browser or Postman.
 
 ---
 
 ## Simple Examples (curl)
 
-- **See the API links:** `curl http://localhost:8080/api/v1`
-- **Get all rooms:** `curl http://localhost:8080/api/v1/rooms`
-- **Add a new room:** `curl -X POST http://localhost:8080/api/v1/rooms -H "Content-Type: application/json" -d '{"id":"HALL-01","name":"Main Hall","capacity":200}'`
-- **Search for CO2 sensors:** `curl http://localhost:8080/api/v1/sensors?type=CO2`
-- **Add a sensor reading:** `curl -X POST http://localhost:8080/api/v1/sensors/TEMP-001/readings -H "Content-Type: application/json" -d '{"value": 23.7}'`
+- **See the API links:** `curl http://localhost:8081/api/`
+- **Get all rooms:** `curl http://localhost:8081/api/rooms`
+- **Add a new room:** `curl -X POST http://localhost:8081/api/rooms -H "Content-Type: application/json" -d '{"id":"ROOM-101","name":"Classroom 101","capacity":40}'`
+- **Search for sensors:** `curl http://localhost:8081/api/sensors?type=Temperature`
+- **Add a sensor reading:** `curl -X POST http://localhost:8081/api/sensors/TEMP-001/readings -H "Content-Type: application/json" -d '{"value": 22.5}'`
 
 ---
 
@@ -56,19 +61,19 @@ I used Java with Jersey and Grizzly to build this. All the data is stored in mem
 ## Answers to Questions
 
 **1. How it works (Architecture)**
-JAX-RS usually creates a new object for every request. Because of this, we can't save data inside the classes. I used a `DataStore` class which is a "Singleton" (meaning only one exists) to keep all the data. I also used `ConcurrentHashMap` so that if many people use the API at once, the data stays safe.
+In Jersey, a new object is usually created for every single request. This means we can't just save data inside the class variables. So, I used a `DataStore` class (a Singleton) to keep all our data in one place. I also used `ConcurrentHashMap` to make sure the data stays safe even if many people use the API at the same time.
 
 **2. Discovery Endpoint**
-I added links in the response so that someone using the API knows where to go next. This makes the API easy to use without looking at the manual all the time.
+I added links in the response so anyone using the API can easily find their way around. It makes the API much easier to use!
 
 **3. Room Management**
-When you ask for a list of rooms, I send all the room details instead of just IDs. This is better because the user doesn't have to make 100 more requests just to see the room names.
+When you ask for a list of rooms, I send back all the details (like name and capacity) instead of just IDs. This saves the user from having to make many extra requests to get the info they need.
 
 **4. Deleting Rooms**
-If you try to delete a room that doesn't exist, it returns a 404. If it is already deleted, it still works fine (idempotent). But I made sure you can't delete a room if it still has sensors in it!
+I made the DELETE operation "idempotent," which means if you try to delete the same thing twice, nothing bad happens. I also added a safety check so you can't delete a room if it still has sensors inside it.
 
 **5. JSON and Errors**
-I used `@Consumes` to make sure we only accept JSON data. If someone sends something else, the server says it's not supported. I also used special "Exception Mappers" to catch errors and show them in a nice way to the user.
+I used `@Consumes` to make sure we only accept JSON data. I also made special "Exception Mappers" so that if something goes wrong, the API sends back a nice, clear error message in JSON format.
 
 **6. Logging**
-I added a filter that logs every request and response. This is much better than putting print statements everywhere in the code!
+I added a special filter that logs every single request and response. This is way better than manually writing print statements in every function!
