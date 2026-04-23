@@ -13,8 +13,8 @@ import java.net.URI;
 
 public class Main {
 
-    // The base host for our server
-    public static final String BASE_URI = "http://localhost:8080/";
+    // The base URL for our server
+    public static final String BASE_URI = "http://localhost:8080/api/v1/";
 
     public static void main(String[] args) throws Exception {
         // Setting up Jersey and telling it where to find our code
@@ -26,13 +26,13 @@ public class Main {
                 )
                 .register(JacksonFeature.class); // This helps with JSON
 
-        // Starting the Grizzly server at http://localhost:8080/api/v1/
+        // Starting the Grizzly server
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
-                URI.create(BASE_URI + "api/v1/"), config);
+                URI.create(BASE_URI), config);
 
         System.out.println("===================================================");
         System.out.println("Smart Campus API started!");
-        System.out.println("Discovery endpoint: " + BASE_URI + "api/v1/");
+        System.out.println("Discovery endpoint: " + BASE_URI);
         System.out.println("Press ENTER to stop the server.");
         System.out.println("===================================================");
 
