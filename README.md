@@ -58,22 +58,25 @@ You can watch my project demo video here: [Watch on YouTube](https://youtu.be/Z0
 
 ---
 
-## Answers to Questions
+## Answers to Coursework Questions
 
 **1. How it works (Architecture)**
-In Jersey, a new object is usually created for every single request. This means we can't just save data inside the class variables. So, I used a `DataStore` class (a Singleton) to keep all our data in one place. I also used `ConcurrentHashMap` to make sure the data stays safe even if many people use the API at the same time.
+In Jersey, a new object is usually created for every single request. This means we can't just save data inside the class variables. So, I used a `DataStore` class (a Singleton) to keep all our data in one place. I also used `ConcurrentHashMap` to make sure the data stays safe even if many people use the API at the same time. I also used **Jackson** so that the API can understand and send JSON data automatically.
 
-**2. Discovery Endpoint**
-I added links in the response so anyone using the API can easily find their way around. It makes the API much easier to use!
+**2. Discovery Endpoint (HATEOAS)**
+I added a "Discovery" endpoint which is like a home page for the API. It contains links to other parts of the system, like rooms and sensors. This makes the API "self-documenting" because the user doesn't have to guess the URLs!
 
-**3. Room Management**
-When you ask for a list of rooms, I send back all the details (like name and capacity) instead of just IDs. This saves the user from having to make many extra requests to get the info they need.
+**3. Room Management (Resource Design)**
+When you ask for a list of rooms, I chose to send back all the details (like name and capacity) instead of just the IDs. This is much better because it saves the user from having to make dozens of extra requests just to see the names of the rooms.
 
-**4. Deleting Rooms**
-I made the DELETE operation "idempotent," which means if you try to delete the same thing twice, nothing bad happens. I also added a safety check so you can't delete a room if it still has sensors inside it.
+**4. Deleting Rooms (Idempotency)**
+I made the DELETE operation "idempotent," which means deleting something once or twice has the same effect on the server. I also added a safety check: if a room still has sensors in it, the API will block the deletion and send an error message.
 
-**5. JSON and Errors**
-I used `@Consumes` to make sure we only accept JSON data. I also made special "Exception Mappers" so that if something goes wrong, the API sends back a nice, clear error message in JSON format.
+**5. Sub-Resources (Nesting)**
+For the sensor readings, I used a "Sub-resource" pattern. This means the readings are nested inside the sensors (like `/sensors/ID/readings`). This makes the API structure very logical and easy to follow.
 
-**6. Logging**
-I added a special filter that logs every single request and response. This is way better than manually writing print statements in every function!
+**6. JSON and Error Handling**
+I used `@Consumes` and `@Produces` to make sure the API only speaks JSON. I also built special **Exception Mappers**. For example, if you try to add a sensor to a room that doesn't exist, the API sends back a clear `422 Unprocessable Entity` error instead of just crashing.
+
+**7. Logging and Filters**
+Instead of writing log messages in every single function, I used a **Logging Filter**. This automatically records every request and response that comes through the API, making it much easier to debug and keep track of what's happening.
